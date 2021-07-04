@@ -1,18 +1,24 @@
 {{ define "create" }}
 
 {{ template "header" }}
-
-    <form>
-        <div class="mb-3">
-          <label style="color: white;" class="form-label">Service</label>
-          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    <form style="margin: 10px;" method="POST" action="/push_create">
+        <h1 class="h3 mb-3 fw-normal" style="color: white;">Create new</h1>
+        <div class="form-floating">
+          <input type="text" class="form-control" id="floatingInput" placeholder="example.com" style="border-radius: 0;" name="service">
+          <label for="floatingInput">Service name</label>
         </div>
-        <div class="mb-3">
-          <label style="color: white;" class="form-label">Password</label>
-          <input type="password" class="form-control" id="exampleInputPassword1">
+        <div class="form-floating">
+          <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" style="border-radius: 0;" name="email">
+          <label for="floatingInput">Email</label>
         </div>
-        <button type="submit" class="btn btn-warning">Create</button>
+        <div class="form-floating">
+          <input type="text" class="form-control" id="floatingPassword" placeholder="Password" style="border-radius: 0;" name="pass">
+          <label for="floatingInput">Password</label>
+        </div>
+        <button type="submit" class="w-100 btn btn-lg btn-warning" style="border-radius: 0;">Create</button>
+        <p class="mt-5 mb-3 text-muted">© 2021</p>
       </form>
+  </div>
 </body>
 </html>
 {{end}}

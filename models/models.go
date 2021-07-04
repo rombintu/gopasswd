@@ -8,6 +8,7 @@ type Users struct {
 
 type Passwords struct {
 	Id      uint
-	Title   string `json:"title"`
-	content string `json:"content"`
+	Service string `json:"service"`
+	Email   string `json:"email"`
+	Pass    string `json:"pass"`
 }
