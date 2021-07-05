@@ -16,9 +16,8 @@ func Index(res http.ResponseWriter, req *http.Request) {
 	}
 
 	db := database.Get_db()
-	// var passwords models.Passwords
-	passwords := db.Model(&models.Passwords{})
-	fmt.Println(passwords)
+	var passwords []models.Passwords
+	db.Find(&passwords)
 	template.ExecuteTemplate(res, "index", passwords)
 }
 
