@@ -36,6 +36,12 @@ func Push_create(res http.ResponseWriter, req *http.Request) {
 	var email string = req.FormValue("email")
 	var pass string = req.FormValue("pass")
 
+	if service_name == "" || email == "" || pass == "" {
+		http.Redirect(res, req, "/create", http.StatusSeeOther)
+		return
+	}
+	key := []byte("passphrasewhichneedstobe32bytes!")
+	enpass := crypt.encode_pass([]byte(pass), key)
 	db := database.Get_db()
 	db.Create(&models.Passwords{Service: service_name, Email: email, Pass: pass})
 
