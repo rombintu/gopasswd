@@ -9,6 +9,7 @@ type Users struct {
 type Passwords struct {
 	Id      uint
 	Service string `json:"service"`
+	Url     string `json:"url"`
 	Email   string `json:"email"`
 	Pass    string `json:"pass"`
 }

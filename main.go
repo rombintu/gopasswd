@@ -11,8 +11,10 @@ import (
 func listen() {
 	http.HandleFunc("/", routes.Index)
 	http.HandleFunc("/create", routes.Create)
-	http.HandleFunc("/push_create", routes.Push_create)
-	http.HandleFunc("/login", routes.Login)
+	http.HandleFunc("/create_push", routes.Create_push)
+	http.HandleFunc("/import", routes.Import_passwords)
+	http.HandleFunc("/import_push", routes.Import_passwords_push)
+
 	http.ListenAndServe(":8080", nil)
 }
 

@@ -1,11 +1,15 @@
 {{ define "create" }}
 
 {{ template "header" }}
-    <form style="margin: 10px;" method="POST" action="/push_create">
+    <form style="margin: 10px;" method="POST" action="/create_push">
         <h1 class="h3 mb-3 fw-normal" style="color: white;">Create new</h1>
         <div class="form-floating">
           <input type="text" class="form-control" id="floatingInput" placeholder="example.com" style="border-radius: 0;" name="service">
           <label for="floatingInput">Service name</label>
+        </div>
+        <div class="form-floating">
+          <input type="text" class="form-control" id="floatingInput" placeholder="http://example.com" style="border-radius: 0;" name="url">
+          <label for="floatingInput">URL</label>
         </div>
         <div class="form-floating">
           <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" style="border-radius: 0;" name="email">

@@ -1,13 +1,12 @@
 {{ define "index" }}
 
 {{ template "header" }}
-    <!-- <h1>My Passwords</h1> -->
     <table class="table table-dark table-hover" style="width: 80%;">
-        <tr><td><h3>Service</h3></td><td><h3>Email</h3></td><td><h3>Password</h3></td></tr>
+        <tr><td><h3>Service</h3></td><td><h3>Url</h3></td><td><h3>Email</h3></td><td><h3>Password</h3></td></tr>
         {{range .}}
-            <tr><td>{{.Service}}</td><td>{{.Email}}</td><td>{{.Pass}}</td>
+            <tr><td>{{.Service}}</td><td><a href="{{.Url}}">{{.Url}}</a></td><td>{{.Email}}</td><td>{{.Pass}}</td>
         {{else}}
-            <tr><td>example.com</td><td>example@example.com</td><td>example.pass</td>
+            <tr><td>example.com</td><td><a href="#">http://example.com</a></td><td>example@example.com</td><td>example.pass</td>
         {{end}}
     </table>
 </div>
