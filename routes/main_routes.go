@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"text/template"
 
+	"github.com/rombintu/gopassic.git/crypt"
 	"github.com/rombintu/gopassic.git/database"
 	"github.com/rombintu/gopassic.git/models"
 )
@@ -18,6 +19,9 @@ func Index(res http.ResponseWriter, req *http.Request) {
 	db := database.Get_db()
 	var passwords []models.Passwords
 	db.Find(&passwords)
+	for i := 0; i < len(passwords); i++ {
+		passwords[i].Pass = string(crypt.Decode_pass(passwords[i].Pass))
+	}
 	template.ExecuteTemplate(res, "index", passwords)
 }
 
@@ -40,10 +44,10 @@ func Push_create(res http.ResponseWriter, req *http.Request) {
 		http.Redirect(res, req, "/create", http.StatusSeeOther)
 		return
 	}
-	key := []byte("passphrasewhichneedstobe32bytes!")
-	enpass := crypt.encode_pass([]byte(pass), key)
+
+	enpass := crypt.Encode_pass([]byte(pass))
 	db := database.Get_db()
-	db.Create(&models.Passwords{Service: service_name, Email: email, Pass: pass})
+	db.Create(&models.Passwords{Service: service_name, Email: email, Pass: enpass})
 
 	http.Redirect(res, req, "/", http.StatusSeeOther)
 }
