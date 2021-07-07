@@ -12,6 +12,6 @@ go run main.go
 ```
 git clone https://github.com/rombintu/gopasswd.git
 cd gopasswd
-sudo docker build -t gopasswd/docker .
-sudo docker run -d -p 5000:8080 gopasswd/docker
+sudo docker build -t gopasswd/alpine .
+sudo docker run -d -p 5000:8080 gopasswd/alpine
 ```
