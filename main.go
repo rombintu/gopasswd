@@ -4,17 +4,16 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/rombintu/gopassic.git/database"
-	"github.com/rombintu/gopassic.git/routes"
+	"github.com/rombintu/gopasswd.git/database"
+	"github.com/rombintu/gopasswd.git/routes"
 )
 
 func listen() {
 	http.HandleFunc("/", routes.Index)
 	http.HandleFunc("/create", routes.Create)
-	http.HandleFunc("/create_push", routes.Create_push)
-	http.HandleFunc("/import", routes.Import_passwords)
-	http.HandleFunc("/import_push", routes.Import_passwords_push)
-
+	http.HandleFunc("/import", routes.Import)
+	http.HandleFunc("/delete", routes.Delete)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 	http.ListenAndServe(":8080", nil)
 }
 

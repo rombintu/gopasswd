@@ -1,13 +1,13 @@
 package database
 
 import (
-	"github.com/rombintu/gopassic.git/models"
+	"github.com/rombintu/gopasswd.git/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 func Init() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("sqlite.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -18,7 +18,7 @@ func Init() *gorm.DB {
 }
 
 func Get_db() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("sqlite.db"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}

@@ -4,11 +4,20 @@
 ```
 git clone https://github.com/rombintu/gopasswd.git
 cd gopasswd
-export KEY="passphrasewhichneedstobe32bytes1"
+cp .env.bak .env
 go run main.go
 ```
 
-## Docker
+## Build
+```
+git clone https://github.com/rombintu/gopasswd.git
+cd gopasswd
+cp .env.bak .env
+go build -o gopasswd main.go
+./gopasswd
+```
+
+## Docker build
 ```
 git clone https://github.com/rombintu/gopasswd.git
 cd gopasswd
