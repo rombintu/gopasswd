@@ -12,4 +12,5 @@ type Passwords struct {
 	Url     string `json:"url"`
 	Email   string `json:"email"`
 	Pass    string `json:"pass"`
+	User_id uint
 }

@@ -13,7 +13,7 @@ import (
 )
 
 func Index(res http.ResponseWriter, req *http.Request) {
-	log.Println("GET /")
+	log.Println(req.Method, "/")
 	template, err := template.ParseFiles("templates/index.html", "templates/header.html")
 	if err != nil {
 		fmt.Fprintf(res, err.Error())
@@ -31,7 +31,7 @@ func Index(res http.ResponseWriter, req *http.Request) {
 func Create(res http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "GET":
-		log.Println("GET /create")
+		log.Println(req.Method, "/create")
 		template, err := template.ParseFiles("templates/create.html", "templates/header.html")
 		if err != nil {
 			fmt.Fprintf(res, err.Error())
@@ -40,7 +40,7 @@ func Create(res http.ResponseWriter, req *http.Request) {
 		template.ExecuteTemplate(res, "create", nil)
 
 	case "POST":
-		log.Println("POST /create")
+		log.Println(req.Method, "/create")
 		var service string = req.FormValue("service")
 		var url string = req.FormValue("url")
 		var email string = req.FormValue("email")
@@ -62,7 +62,7 @@ func Create(res http.ResponseWriter, req *http.Request) {
 func Import(res http.ResponseWriter, req *http.Request) {
 	switch req.Method {
 	case "GET":
-		log.Println("GET /import")
+		log.Println(req.Method, "/import")
 		template, err := template.ParseFiles("templates/import.html", "templates/header.html")
 		if err != nil {
 			fmt.Fprintf(res, err.Error())
@@ -70,7 +70,7 @@ func Import(res http.ResponseWriter, req *http.Request) {
 
 		template.ExecuteTemplate(res, "import", nil)
 	case "POST":
-		log.Println("POST /import")
+		log.Println(req.Method, "/import")
 		file, _, err := req.FormFile("file")
 		if file == nil {
 			http.Redirect(res, req, "/import", http.StatusSeeOther)
@@ -98,7 +98,7 @@ func Import(res http.ResponseWriter, req *http.Request) {
 }
 
 func Delete(res http.ResponseWriter, req *http.Request) {
-	log.Println("POST /delete")
+	log.Println(req.Method, "/delete")
 	var id_pass string = req.FormValue("id_pass")
 
 	db := database.Get_db()
