@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"encoding/gob"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,7 +13,27 @@ import (
 	"github.com/rombintu/gopasswd.git/models"
 )
 
+func checkLogin(res http.ResponseWriter, req *http.Request) {
+	gob.Register(sesKey(0))
+	sesStatus, err := cookieStore.Get(req, cookieName)
+	if err != nil {
+		fmt.Fprintf(res, err.Error(), http.StatusBadRequest)
+	}
+
+	login, ok := sesStatus.Values[sesKeyLogin].(int)
+	if !ok {
+		login = 0
+	}
+
+	if login != 1 {
+		http.Redirect(res, req, "/sign", http.StatusSeeOther)
+	}
+}
+
 func Index(res http.ResponseWriter, req *http.Request) {
+
+	checkLogin(res, req)
+
 	log.Println(req.Method, "/")
 	template, err := template.ParseFiles("templates/index.html", "templates/header.html")
 	if err != nil {
@@ -29,12 +50,15 @@ func Index(res http.ResponseWriter, req *http.Request) {
 }
 
 func Create(res http.ResponseWriter, req *http.Request) {
+
+	checkLogin(res, req)
+
 	switch req.Method {
 	case "GET":
 		log.Println(req.Method, "/create")
 		template, err := template.ParseFiles("templates/create.html", "templates/header.html")
 		if err != nil {
-			fmt.Fprintf(res, err.Error())
+			fmt.Fprintf(res, err.Error(), http.StatusBadRequest)
 		}
 
 		template.ExecuteTemplate(res, "create", nil)
@@ -60,12 +84,15 @@ func Create(res http.ResponseWriter, req *http.Request) {
 }
 
 func Import(res http.ResponseWriter, req *http.Request) {
+
+	checkLogin(res, req)
+
 	switch req.Method {
 	case "GET":
 		log.Println(req.Method, "/import")
 		template, err := template.ParseFiles("templates/import.html", "templates/header.html")
 		if err != nil {
-			fmt.Fprintf(res, err.Error())
+			fmt.Fprintf(res, err.Error(), http.StatusBadRequest)
 		}
 
 		template.ExecuteTemplate(res, "import", nil)
@@ -98,6 +125,9 @@ func Import(res http.ResponseWriter, req *http.Request) {
 }
 
 func Delete(res http.ResponseWriter, req *http.Request) {
+
+	checkLogin(res, req)
+
 	log.Println(req.Method, "/delete")
 	var id_pass string = req.FormValue("id_pass")
 

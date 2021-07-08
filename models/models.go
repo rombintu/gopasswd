@@ -2,8 +2,8 @@ package models
 
 type Users struct {
 	Id       uint
-	Login    string
-	Password string
+	Login    string `json:"login"`
+	Password string `json:"pass"`
 }
 
 type Passwords struct {
