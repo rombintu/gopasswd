@@ -26,11 +26,19 @@
       <!-- <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
         <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
       </form> -->
-
+      
+      {{if.Status }}
       <div class="text-end">
+        
         <a href="/sign" type="button" class="btn btn-outline-light me-2" style="border-radius: 0;">Login</a>
         <a href="/reg" type="button" class="btn btn-warning" style="border-radius: 0;">Sign-up</a>
       </div>
+      {{else}}
+      <div class="text-end">
+        <a href="/logout" type="button" class="btn btn-warning" style="border-radius: 0;">Logout</a>
+      </div>
+      {{end}}
+      
     </div>
   </div>
 </header>
@@ -38,4 +46,4 @@
     <br>
     <br>
     <div style="display: flex; justify-content: center; text-align: center;">
-{{ end }}
+{{end}

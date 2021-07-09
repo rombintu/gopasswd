@@ -1,6 +1,7 @@
 {{ define "index" }}
 
 {{ template "header" }}
+
     <table class="table table-dark table-hover" style="width: 80%;">
         <tr>
             <td><h3>Service</h3></td><td><h3>Url</h3></td>
@@ -8,7 +9,7 @@
             <td><h3>Password</h3></td>
             <td>Delete</td>
         </tr>
-        {{range .}}
+        {{range .Passwords}}
             <tr>
                 <td>{{.Service}}</td>
                 <td><a href="{{.Url}}">{{.Url}}</a></td>
