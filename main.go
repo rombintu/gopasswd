@@ -15,6 +15,7 @@ func listen() {
 	router.HandleFunc("/", routes.Index)
 	router.HandleFunc("/sign", routes.Sign)
 	router.HandleFunc("/reg", routes.Reg)
+	router.HandleFunc("/logout", routes.Logout)
 	router.HandleFunc("/create", routes.Create)
 	router.HandleFunc("/import", routes.Import)
 	router.HandleFunc("/delete", routes.Delete)

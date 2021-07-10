@@ -131,3 +131,21 @@ func Reg(res http.ResponseWriter, req *http.Request) {
 	}
 
 }
+
+func Logout(res http.ResponseWriter, req *http.Request) {
+	log.Println(req.Method, "/logout")
+	sesStatus, err := cookieStore.Get(req, cookieName)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	sesStatus.Values[sesKeyLogin] = 0
+	err = cookieStore.Save(req, res, sesStatus)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	http.Redirect(res, req, "/sign", http.StatusSeeOther)
+}

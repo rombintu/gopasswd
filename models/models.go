@@ -14,3 +14,12 @@ type Passwords struct {
 	Pass    string `json:"pass"`
 	User_id uint
 }
+
+type Index_page struct {
+	Passwords []Passwords
+	Status    int
+}
+
+type Other_page struct {
+	Status int
+}

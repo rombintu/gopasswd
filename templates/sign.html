@@ -2,21 +2,30 @@
 
 {{ template "header" }}
 
-<form action="/sign" method="POST">
-    <h1 class="h2 mb-3 fw-normal">LOGIN</h1>
-    <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInput" placeholder="Username" style="border-radius: 0;" name="username">
-        <label for="floatingInput">Username</label>
+            <div class="text-end">
+            <a href="/sign" type="button" class="btn btn-outline-light me-2" style="border-radius: 0;">Login</a>
+            <a href="/reg" type="button" class="btn btn-warning" style="border-radius: 0;">Sign-up</a>
+            </div>
+        </div>
     </div>
-    <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" style="border-radius: 0;" name="password">
-        <label for="floatingInput">Password</label>
-      </div>
-    <button type="submit" class="w-100 btn btn-lg btn-warning" style="border-radius: 0;">Enter</button>
-    <p class="mt-5 mb-3 text-muted">No account? <a href="/reg">Registration</a></p>
-    <p class="mt-5 mb-3 text-muted">© 2021</p>
-</form>
-</div>
+</header>
+<body style="background-color: #343a40;">
+    <div style="display: flex; justify-content: center; text-align: center; margin-top: 20%;">
+        <form action="/sign" method="POST">
+            <h1 class="h2 mb-3 fw-normal">LOGIN</h1>
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInput" placeholder="Username" style="border-radius: 0;" name="username">
+                <label for="floatingInput">Username</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control" id="floatingPassword" placeholder="Password" style="border-radius: 0;" name="password">
+                <label for="floatingInput">Password</label>
+            </div>
+            <button type="submit" class="w-100 btn btn-lg btn-warning" style="border-radius: 0;">Enter</button>
+            <p class="mt-5 mb-3 text-muted">No account? <a href="/reg">Registration</a></p>
+            <p class="mt-5 mb-3 text-muted">© 2021</p>
+        </form>
+    </div>
 </body>
 </html>
 {{end}}

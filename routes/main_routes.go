@@ -13,7 +13,7 @@ import (
 	"github.com/rombintu/gopasswd.git/models"
 )
 
-func checkLogin(res http.ResponseWriter, req *http.Request) {
+func Check_login(res http.ResponseWriter, req *http.Request) int {
 	gob.Register(sesKey(0))
 	sesStatus, err := cookieStore.Get(req, cookieName)
 	if err != nil {
@@ -28,16 +28,18 @@ func checkLogin(res http.ResponseWriter, req *http.Request) {
 	if login != 1 {
 		http.Redirect(res, req, "/sign", http.StatusSeeOther)
 	}
+
+	return login
 }
 
 func Index(res http.ResponseWriter, req *http.Request) {
 
-	checkLogin(res, req)
+	var status int = Check_login(res, req)
 
 	log.Println(req.Method, "/")
 	template, err := template.ParseFiles("templates/index.html", "templates/header.html")
 	if err != nil {
-		fmt.Fprintf(res, err.Error())
+		fmt.Fprintf(res, err.Error(), http.StatusBadRequest)
 	}
 
 	db := database.Get_db()
@@ -46,12 +48,15 @@ func Index(res http.ResponseWriter, req *http.Request) {
 	for i := 0; i < len(passwords); i++ {
 		passwords[i].Pass = string(crypt.Decode_pass(passwords[i].Pass))
 	}
-	template.ExecuteTemplate(res, "index", passwords)
+
+	Data := &models.Index_page{Passwords: passwords, Status: status}
+
+	template.ExecuteTemplate(res, "index", Data)
 }
 
 func Create(res http.ResponseWriter, req *http.Request) {
 
-	checkLogin(res, req)
+	var status int = Check_login(res, req)
 
 	switch req.Method {
 	case "GET":
@@ -61,7 +66,9 @@ func Create(res http.ResponseWriter, req *http.Request) {
 			fmt.Fprintf(res, err.Error(), http.StatusBadRequest)
 		}
 
-		template.ExecuteTemplate(res, "create", nil)
+		Data := &models.Other_page{Status: status}
+
+		template.ExecuteTemplate(res, "create", Data)
 
 	case "POST":
 		log.Println(req.Method, "/create")
@@ -85,7 +92,7 @@ func Create(res http.ResponseWriter, req *http.Request) {
 
 func Import(res http.ResponseWriter, req *http.Request) {
 
-	checkLogin(res, req)
+	var status int = Check_login(res, req)
 
 	switch req.Method {
 	case "GET":
@@ -95,7 +102,9 @@ func Import(res http.ResponseWriter, req *http.Request) {
 			fmt.Fprintf(res, err.Error(), http.StatusBadRequest)
 		}
 
-		template.ExecuteTemplate(res, "import", nil)
+		Data := &models.Other_page{Status: status}
+
+		template.ExecuteTemplate(res, "import", Data)
 	case "POST":
 		log.Println(req.Method, "/import")
 		file, _, err := req.FormFile("file")
@@ -124,9 +133,14 @@ func Import(res http.ResponseWriter, req *http.Request) {
 
 }
 
+// TODO
+func Export(res http.ResponseWriter, req *http.Request) {
+
+}
+
 func Delete(res http.ResponseWriter, req *http.Request) {
 
-	checkLogin(res, req)
+	Check_login(res, req)
 
 	log.Println(req.Method, "/delete")
 	var id_pass string = req.FormValue("id_pass")

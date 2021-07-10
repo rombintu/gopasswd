@@ -1,6 +1,24 @@
 {{ define "import" }}
 
 {{ template "header" }}
+
+      {{if ne .Status 1}}
+      <div class="text-end">
+        <a href="/sign" type="button" class="btn btn-outline-light me-2" style="border-radius: 0;">Login</a>
+        <a href="/reg" type="button" class="btn btn-warning" style="border-radius: 0;">Sign-up</a>
+      </div>
+      {{else}}
+      <div class="text-end">
+        <a href="/logout" type="button" class="btn btn-warning" style="border-radius: 0;">Logout</a>
+      </div>
+      {{end}}
+    </div>
+  </div>
+</header>
+<body style="background-color: #343a40;">
+  <br>
+  <br>
+  <div style="display: flex; justify-content: center; text-align: center;"></div>
     <form style="margin: 10px;" method="POST" action="/import" enctype="multipart/form-data">
       <h1 class="h2 mb-3 fw-normal">IMPORT</h1>
       <div class="form-group">
