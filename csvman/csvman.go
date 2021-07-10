@@ -2,8 +2,9 @@ package csvman
 
 import (
 	"encoding/csv"
-	"fmt"
+	"log"
 	"mime/multipart"
+	"os"
 )
 
 func Parse_csv(file multipart.File) [][]string {
@@ -15,12 +16,26 @@ func Parse_csv(file multipart.File) [][]string {
 
 	var data [][]string
 	for {
-		record, e := reader.Read()
-		if e != nil {
-			fmt.Println(e)
+		record, err := reader.Read()
+		if err != nil {
+			log.Println(err)
 			break
 		}
 		data = append(data, record)
 	}
 	return data
+}
+
+func Export_csv(data [][]string) multipart.File {
+	csv_file, err := os.Create("MyPasswords.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+	writer := csv.NewWriter(csv_file)
+
+	writer.WriteAll(data)
+	writer.Flush()
+	csv_file.Close()
+
+	return csv_file
 }

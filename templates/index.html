@@ -2,7 +2,7 @@
 
 {{template "header"}}
       
-      {{if ne .Status 1}}
+      {{if eq .Status "nil"}}
       <div class="text-end">
         <a href="/sign" type="button" class="btn btn-outline-light me-2" style="border-radius: 0;">Login</a>
         <a href="/reg" type="button" class="btn btn-warning" style="border-radius: 0;">Sign-up</a>

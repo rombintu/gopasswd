@@ -18,6 +18,7 @@ func listen() {
 	router.HandleFunc("/logout", routes.Logout)
 	router.HandleFunc("/create", routes.Create)
 	router.HandleFunc("/import", routes.Import)
+	router.HandleFunc("/export", routes.Export)
 	router.HandleFunc("/delete", routes.Delete)
 
 	router.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))

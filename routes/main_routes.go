@@ -13,19 +13,19 @@ import (
 	"github.com/rombintu/gopasswd.git/models"
 )
 
-func Check_login(res http.ResponseWriter, req *http.Request) int {
+func Check_login(res http.ResponseWriter, req *http.Request) string {
 	gob.Register(sesKey(0))
 	sesStatus, err := cookieStore.Get(req, cookieName)
 	if err != nil {
 		fmt.Fprintf(res, err.Error(), http.StatusBadRequest)
 	}
 
-	login, ok := sesStatus.Values[sesKeyLogin].(int)
+	login, ok := sesStatus.Values[sesKeyLogin].(string)
 	if !ok {
-		login = 0
+		login = "nil"
 	}
 
-	if login != 1 {
+	if login == "nil" {
 		http.Redirect(res, req, "/sign", http.StatusSeeOther)
 	}
 
@@ -34,7 +34,7 @@ func Check_login(res http.ResponseWriter, req *http.Request) int {
 
 func Index(res http.ResponseWriter, req *http.Request) {
 
-	var status int = Check_login(res, req)
+	status := Check_login(res, req)
 
 	log.Println(req.Method, "/")
 	template, err := template.ParseFiles("templates/index.html", "templates/header.html")
@@ -43,8 +43,10 @@ func Index(res http.ResponseWriter, req *http.Request) {
 	}
 
 	db := database.Get_db()
+
 	var passwords []models.Passwords
-	db.Find(&passwords)
+
+	db.Find(&passwords, "User_login = ?", status)
 	for i := 0; i < len(passwords); i++ {
 		passwords[i].Pass = string(crypt.Decode_pass(passwords[i].Pass))
 	}
@@ -56,7 +58,7 @@ func Index(res http.ResponseWriter, req *http.Request) {
 
 func Create(res http.ResponseWriter, req *http.Request) {
 
-	var status int = Check_login(res, req)
+	status := Check_login(res, req)
 
 	switch req.Method {
 	case "GET":
@@ -84,7 +86,13 @@ func Create(res http.ResponseWriter, req *http.Request) {
 
 		enpass := crypt.Encode_pass([]byte(pass))
 		db := database.Get_db()
-		db.Create(&models.Passwords{Service: service, Url: url, Email: email, Pass: enpass})
+		db.Create(&models.Passwords{
+			Service:    service,
+			Url:        url,
+			Email:      email,
+			Pass:       enpass,
+			User_login: status,
+		})
 
 		http.Redirect(res, req, "/", http.StatusSeeOther)
 	}
@@ -92,7 +100,7 @@ func Create(res http.ResponseWriter, req *http.Request) {
 
 func Import(res http.ResponseWriter, req *http.Request) {
 
-	var status int = Check_login(res, req)
+	status := Check_login(res, req)
 
 	switch req.Method {
 	case "GET":
@@ -125,7 +133,13 @@ func Import(res http.ResponseWriter, req *http.Request) {
 				continue
 			}
 			enpass := crypt.Encode_pass([]byte(data[i][3]))
-			db.Create(&models.Passwords{Service: data[i][0], Url: data[i][1], Email: data[i][2], Pass: enpass})
+			db.Create(&models.Passwords{
+				Service:    data[i][0],
+				Url:        data[i][1],
+				Email:      data[i][2],
+				Pass:       enpass,
+				User_login: status,
+			})
 		}
 
 		http.Redirect(res, req, "/", http.StatusSeeOther)
@@ -135,6 +149,66 @@ func Import(res http.ResponseWriter, req *http.Request) {
 
 // TODO
 func Export(res http.ResponseWriter, req *http.Request) {
+	status := Check_login(res, req)
+
+	switch req.Method {
+	case "GET":
+		log.Println(req.Method, "/export")
+		template, err := template.ParseFiles("templates/export.html", "templates/header.html")
+		if err != nil {
+			fmt.Fprintf(res, err.Error(), http.StatusBadRequest)
+		}
+
+		Data := &models.Other_page{Status: status}
+
+		template.ExecuteTemplate(res, "export", Data)
+	case "POST":
+		db := database.Get_db()
+
+		var chbox string = req.FormValue("chbox")
+		var passwords []models.Passwords
+		var service_s []string
+		var url_s []string
+		var email_s []string
+		var pass_s []string
+
+		db.Find(&passwords, "User_login = ?", status)
+		for i := 0; i < len(passwords); i++ {
+			service_s = append(service_s, passwords[i].Service)
+			url_s = append(url_s, passwords[i].Url)
+			email_s = append(email_s, passwords[i].Email)
+			if chbox == "1" {
+				pass_s = append(pass_s, string(crypt.Decode_pass(passwords[i].Pass)))
+			} else {
+				pass_s = append(pass_s, passwords[i].Pass)
+			}
+		}
+
+		// Data := &models.Export_data{
+		// 	Service: service_s,
+		// 	Url:     url_s,
+		// 	Email:   email_s,
+		// 	Pass:    pass_s,
+		// }
+
+		var Data_csv [][]string
+		Data_csv = append(Data_csv, service_s)
+		Data_csv = append(Data_csv, url_s)
+		Data_csv = append(Data_csv, email_s)
+		Data_csv = append(Data_csv, pass_s)
+
+		// log.Println(Data_csv)
+		new_csv_file := csvman.Export_csv(Data_csv)
+		// res.Header().Set("Content-Disposition", "attachment; filename=MyPasswords.csv")
+		// res.Header().Set("Content-Type", "application/octet-stream")
+		// res.WriteHeader(http.StatusOK)
+
+		d := csvman.Parse_csv(new_csv_file)
+		log.Println(d)
+
+		// io.Copy(res, new_csv_file)
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+	}
 
 }
 

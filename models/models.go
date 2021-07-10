@@ -7,19 +7,26 @@ type Users struct {
 }
 
 type Passwords struct {
-	Id      uint
-	Service string `json:"service"`
-	Url     string `json:"url"`
-	Email   string `json:"email"`
-	Pass    string `json:"pass"`
-	User_id uint
+	Id         uint
+	Service    string `json:"service"`
+	Url        string `json:"url"`
+	Email      string `json:"email"`
+	Pass       string `json:"pass"`
+	User_login string `json:"user_login"`
 }
 
 type Index_page struct {
 	Passwords []Passwords
-	Status    int
+	Status    string
 }
 
 type Other_page struct {
-	Status int
+	Status string
+}
+
+type Export_data struct {
+	Service []string
+	Url     []string
+	Email   []string
+	Pass    []string
 }

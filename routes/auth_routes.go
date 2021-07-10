@@ -41,6 +41,12 @@ func Sign(res http.ResponseWriter, req *http.Request) {
 		log.Println(req.Method, "/sign")
 		var username string = req.FormValue("username")
 		var password string = req.FormValue("password")
+
+		if username == "" || password == "" || username == "nil" {
+			http.Redirect(res, req, "/reg", http.StatusSeeOther)
+			return
+		}
+
 		var user []models.Users
 
 		h := sha256.New()
@@ -64,7 +70,7 @@ func Sign(res http.ResponseWriter, req *http.Request) {
 				return
 			}
 
-			sesStatus.Values[sesKeyLogin] = 1
+			sesStatus.Values[sesKeyLogin] = username
 			err = cookieStore.Save(req, res, sesStatus)
 			if err != nil {
 				http.Error(res, err.Error(), http.StatusBadRequest)
@@ -96,6 +102,12 @@ func Reg(res http.ResponseWriter, req *http.Request) {
 
 		var username string = req.FormValue("username")
 		var password string = req.FormValue("password")
+
+		if username == "" || password == "" || username == "nil" {
+			http.Redirect(res, req, "/reg", http.StatusSeeOther)
+			return
+		}
+
 		var user models.Users
 
 		h := sha256.New()
@@ -117,7 +129,7 @@ func Reg(res http.ResponseWriter, req *http.Request) {
 				return
 			}
 
-			sesStatus.Values[sesKeyLogin] = 1
+			sesStatus.Values[sesKeyLogin] = username
 			err = cookieStore.Save(req, res, sesStatus)
 			if err != nil {
 				http.Error(res, err.Error(), http.StatusBadRequest)
@@ -140,7 +152,7 @@ func Logout(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	sesStatus.Values[sesKeyLogin] = 0
+	sesStatus.Values[sesKeyLogin] = "nil"
 	err = cookieStore.Save(req, res, sesStatus)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusBadRequest)
