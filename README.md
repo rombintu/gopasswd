@@ -1,5 +1,11 @@
 # GOPASSWD
 
+## Description
+**Gopasswd** is a simple password manager  
+Run **Gopasswd** on your PC or Server  
+Store encrypted passwords on your server  
+Import passwords from evil browsers and cloud services  
+
 ## RUN
 ```
 git clone https://github.com/rombintu/gopasswd.git

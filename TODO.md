@@ -10,6 +10,10 @@
 ## 0.6.0
 * database man
 
-## 0.6.1
+## 0.7.0 BETA
 * Export
 * SearchBar
+
+## 0.7.1 
+* Description
+* Builds
