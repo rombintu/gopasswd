@@ -11,7 +11,7 @@ import (
 func Parse_csv(file multipart.File) [][]string {
 
 	reader := csv.NewReader(file)
-	reader.FieldsPerRecord = 5
+	reader.FieldsPerRecord = 4
 	reader.Comment = '#'
 	reader.LazyQuotes = true
 
