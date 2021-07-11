@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"log"
 	"mime/multipart"
+	"net/http"
 	"os"
 )
 
@@ -26,16 +27,23 @@ func Parse_csv(file multipart.File) [][]string {
 	return data
 }
 
-func Export_csv(data [][]string) multipart.File {
+func Export_csv(res http.ResponseWriter, data [][]string) http.ResponseWriter {
 	csv_file, err := os.Create("MyPasswords.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
-	writer := csv.NewWriter(csv_file)
+
+	writer := csv.NewWriter(res)
 
 	writer.WriteAll(data)
-	writer.Flush()
-	csv_file.Close()
 
-	return csv_file
+	defer writer.Flush()
+	defer csv_file.Close()
+
+	// err := writer.Error()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+
+	return res
 }

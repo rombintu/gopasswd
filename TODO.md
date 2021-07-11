@@ -12,3 +12,4 @@
 
 ## 0.6.1
 * Export
+* SearchBar

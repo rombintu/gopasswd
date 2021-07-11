@@ -30,3 +30,10 @@ cd gopasswd
 sudo docker build -t gopasswd/alpine .
 sudo docker run -d -p 5000:8080 gopasswd/alpine
 ```
+
+### Screenshots
+
+![alt text](/screenshots/login.png)
+![alt text](/screenshots/index.png)
+![alt text](/screenshots/create.png)
+<img src="/screenshots/mob_login.png" alt="drawing" width="45%"/> <img src="/screenshots/mob_create.png" alt="drawing" width="45%"/>

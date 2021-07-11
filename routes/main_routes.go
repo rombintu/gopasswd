@@ -167,49 +167,33 @@ func Export(res http.ResponseWriter, req *http.Request) {
 
 		var chbox string = req.FormValue("chbox")
 		var passwords []models.Passwords
-		var service_s []string
-		var url_s []string
-		var email_s []string
-		var pass_s []string
+
+		var depass string
+		var Data_for_csv [][]string
 
 		db.Find(&passwords, "User_login = ?", status)
 		for i := 0; i < len(passwords); i++ {
-			service_s = append(service_s, passwords[i].Service)
-			url_s = append(url_s, passwords[i].Url)
-			email_s = append(email_s, passwords[i].Email)
 			if chbox == "1" {
-				pass_s = append(pass_s, string(crypt.Decode_pass(passwords[i].Pass)))
+				depass = string(crypt.Decode_pass(passwords[i].Pass))
 			} else {
-				pass_s = append(pass_s, passwords[i].Pass)
+				depass = passwords[i].Pass
 			}
+
+			Data_for_csv = append(Data_for_csv, []string{
+				passwords[i].Service,
+				passwords[i].Url,
+				passwords[i].Email,
+				depass,
+			})
 		}
 
-		// Data := &models.Export_data{
-		// 	Service: service_s,
-		// 	Url:     url_s,
-		// 	Email:   email_s,
-		// 	Pass:    pass_s,
-		// }
+		res.Header().Set("Content-Disposition", "attachment; filename=MyPasswords.csv")
+		res.Header().Set("Content-Type", "application/octet-stream")
+		res.WriteHeader(http.StatusOK)
+		csvman.Export_csv(res, Data_for_csv)
 
-		var Data_csv [][]string
-		Data_csv = append(Data_csv, service_s)
-		Data_csv = append(Data_csv, url_s)
-		Data_csv = append(Data_csv, email_s)
-		Data_csv = append(Data_csv, pass_s)
-
-		// log.Println(Data_csv)
-		new_csv_file := csvman.Export_csv(Data_csv)
-		// res.Header().Set("Content-Disposition", "attachment; filename=MyPasswords.csv")
-		// res.Header().Set("Content-Type", "application/octet-stream")
-		// res.WriteHeader(http.StatusOK)
-
-		d := csvman.Parse_csv(new_csv_file)
-		log.Println(d)
-
-		// io.Copy(res, new_csv_file)
-		http.Redirect(res, req, "/", http.StatusSeeOther)
+		// http.Redirect(res, req, "/", http.StatusSeeOther)
 	}
-
 }
 
 func Delete(res http.ResponseWriter, req *http.Request) {
