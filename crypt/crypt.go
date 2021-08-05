@@ -7,18 +7,12 @@ import (
 	"io"
 	"log"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 func Encode_pass(pass []byte) string {
-	err := godotenv.Load()
-	if err != nil {
-		log.Panic("Error loading .env file")
-	}
 	key := []byte(os.Getenv("KEY"))
-	if key == nil {
-		key = []byte("passphrasewhichneedstobe32bytes1")
+	if string(key) == "" || len(key) != 32 {
+		log.Fatal("EXAMPLE:\n    export KEY=passphrasewhichneedstobe32bytes1")
 	}
 	c, err := aes.NewCipher(key)
 
@@ -42,14 +36,11 @@ func Encode_pass(pass []byte) string {
 }
 
 func Decode_pass(enpass string) []byte {
-	err := godotenv.Load()
-	if err != nil {
-		log.Panic("Error loading .env file")
-	}
 	key := []byte(os.Getenv("KEY"))
-	if key == nil {
-		key = []byte("passphrasewhichneedstobe32bytes1")
+	if string(key) == "" || len(key) != 32 {
+		log.Fatal("EXAMPLE:\n    export KEY=passphrasewhichneedstobe32bytes1")
 	}
+
 	c, err := aes.NewCipher(key)
 	if err != nil {
 		log.Panic(err)
@@ -69,7 +60,6 @@ func Decode_pass(enpass string) []byte {
 	depass, err := gcm.Open(nil, []byte(nonce), []byte(enpass), nil)
 	if err != nil {
 		log.Panic(err)
-		depass = []byte("Error key")
 	}
 	return depass
 }

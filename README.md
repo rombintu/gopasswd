@@ -10,10 +10,6 @@ Import passwords from evil browsers and cloud services
 ```
 git clone https://github.com/rombintu/gopasswd.git
 cd gopasswd
-cp .env.bak .env
-```
-Edit .env (KEY - 32 bytes, SECRET)
-```
 go run main.go
 ```
 
@@ -21,10 +17,6 @@ go run main.go
 ```
 git clone https://github.com/rombintu/gopasswd.git
 cd gopasswd
-cp .env.bak .env
-```
-Edit .env (KEY - 32 bytes, SECRET)
-```
 go build -o gopasswd main.go
 ./gopasswd
 ```
