@@ -10,6 +10,8 @@ Import passwords from evil browsers and cloud services
 ```
 git clone https://github.com/rombintu/gopasswd.git
 cd gopasswd
+export CREDS="host=127.0.0.1 user=gopasswd password=gopasswd dbname=gopasswd port=5432 sslmode=disable"
+export KEY=passphrasewhichneedstobe32bytes0
 go run main.go
 ```
 
@@ -18,6 +20,8 @@ go run main.go
 git clone https://github.com/rombintu/gopasswd.git
 cd gopasswd
 go build -o gopasswd main.go
+export CREDS="host=127.0.0.1 user=gopasswd password=gopasswd dbname=gopasswd port=5432 sslmode=disable"
+export KEY=passphrasewhichneedstobe32bytes0
 ./gopasswd
 ```
 
