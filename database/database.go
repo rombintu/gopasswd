@@ -1,6 +1,8 @@
 package database
 
 import (
+	"os"
+
 	"github.com/rombintu/gopasswd.git/models"
 	"gorm.io/driver/postgres"
 
@@ -10,8 +12,9 @@ import (
 )
 
 func Init() *gorm.DB {
-	dsn := "host=localhost user=gopasswd password=gopasswd dbname=gopasswd port=5432 sslmode=disable"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	// export CREDS="host=127.0.0.1 user=gopasswd password=gopasswd dbname=gopasswd port=5432 sslmode=disable"
+	creds := os.Getenv("CREDS")
+	db, err := gorm.Open(postgres.Open(creds), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
@@ -22,8 +25,8 @@ func Init() *gorm.DB {
 }
 
 func Get_db() *gorm.DB {
-	dsn := "host=localhost user=gopasswd password=gopasswd dbname=gopasswd port=5432 sslmode=disable"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	creds := os.Getenv("CREDS")
+	db, err := gorm.Open(postgres.Open(creds), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
