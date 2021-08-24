@@ -29,6 +29,11 @@ sudo docker build -t gopasswd/alpine .
 sudo docker run -d -p 80:8080 gopasswd/alpine
 ```
 
+## Docker-compose 
+```
+sudo docker-compose up
+```
+
 ### Screenshots
 
 ![alt text](/screenshots/login.png)

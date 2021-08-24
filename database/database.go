@@ -10,7 +10,7 @@ import (
 )
 
 func Init() *gorm.DB {
-	dsn := "host=localhost user=gopasswd password=gopasswd dbname=gorm port=5432 sslmode=disable"
+	dsn := "host=localhost user=gopasswd password=gopasswd dbname=gopasswd port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
@@ -22,7 +22,7 @@ func Init() *gorm.DB {
 }
 
 func Get_db() *gorm.DB {
-	dsn := "host=localhost user=gopasswd password=gopasswd dbname=gorm port=5432 sslmode=disable"
+	dsn := "host=localhost user=gopasswd password=gopasswd dbname=gopasswd port=5432 sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
