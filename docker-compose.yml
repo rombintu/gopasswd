@@ -1,0 +1,20 @@
+# version: 3.9
+
+services:
+    db: 
+        image: postgres
+        volumes: 
+            - ./data/db:/var/lib/postgresql/data
+        environment: 
+            - POSTGRES_DB=gopasswd
+            - POSTGRES_USER=gopasswd
+            - POSTGRES_PASSWORD=gopasswd
+    web:
+        build: .
+        command: ./main
+        ports: 
+            - "8080:8080"
+        # volumes: 
+        #     # - .:
+        depends_on:
+            - db
